@@ -74,11 +74,19 @@ typedef struct
 // Prompts user for a name, updates the name variable in struct
 void getName(humanPlayer* input)
 {
+    printf("Welcome to Five of Suits!\n\n");
     char nameInput[MAXNAMESIZE];
-    printf("Enter your name: ");
+    printf("Please enter your nickname and press ENTER: ");
     fgets(nameInput, sizeof(nameInput), stdin);
     
-    strcpy(input->name,nameInput);
+    // Fix to replace trailing \n with \0 from fgets
+    char *pos;
+    if ((pos=strchr(nameInput, '\n')) != NULL)
+    {
+        *pos = '\0';
+    }
+    
+    strcpy(input->name, nameInput);
 }
 
 // Input of a humanPlayer struct address
@@ -92,7 +100,7 @@ void initHumanPlayer(humanPlayer* player)
         player->hand[i].cardValue = 0;
     }
     
-    strcpy(player->name,"Placeholder");
+    //strcpy(player->name,"Placeholder");
     strcpy(player->playerDrewInSuit,"empty");
     
     player->winnerFlag = 0;
@@ -805,6 +813,7 @@ int main()
     humanPlayer player1;
     computerPlayer computer2;
     initWinCounters(&player1, &computer2);
+    getName(&player1);
     
     int replayFlag = 1;
     while(replayFlag == 1)
